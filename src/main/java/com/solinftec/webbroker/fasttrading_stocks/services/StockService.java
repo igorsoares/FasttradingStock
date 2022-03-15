@@ -10,17 +10,19 @@ import com.solinftec.webbroker.fasttrading_stocks.dto.StockUpdate;
 import com.solinftec.webbroker.fasttrading_stocks.model.Stock;
 import com.solinftec.webbroker.fasttrading_stocks.repository.StocksRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StockService {
 
-    @Autowired
     StocksRepository stockRepository;
 
+    public StockService(StocksRepository stockRepository){
+        this.stockRepository=stockRepository;
+    }
+
     private static final Logger LOGGER = Logger.getLogger("StockService");
-    //private static Logger LOGGER = Logger.getLogger("StockService");
+    private static final String STOCK_DOES_NOT_EXISTS="STOCK_DOES_NOT_EXISTS";
 
     public List<Stock> getAllStocks() {
         return this.stockRepository.findAll();
@@ -36,14 +38,14 @@ public class StockService {
             stockModel.setBid_min(stockUpdateDto.getBid_min());
             return stockModel;
         }
-        throw new Exception("STOCK_DOES_NOT_EXISTS");
+        throw new Exception(STOCK_DOES_NOT_EXISTS);
     }
 
     public FullStockDto getStockById(Integer idStock) throws Exception {
         Optional<Stock> optionalStock = this.stockRepository.findById(idStock);
         if (optionalStock.isPresent())
             return new FullStockDto(optionalStock.get());
-        throw new Exception("STOCK_DOES_NOT_EXISTS");
+        throw new Exception(STOCK_DOES_NOT_EXISTS);
     }
 
     public FullStockDto updateStock(StockUpdate stockUpdate) throws Exception {
@@ -53,7 +55,7 @@ public class StockService {
             LOGGER.log(Level.INFO,"Stock updated : {0}",stockModel);
             return new FullStockDto(stockModel);
         }
-        throw new Exception("STOCK_DOES_NOT_EXISTS");
+        throw new Exception(STOCK_DOES_NOT_EXISTS);
     }
 
 }
