@@ -19,6 +19,7 @@ public class StockService {
     StocksRepository stockRepository;
 
     private static Logger LOGGER = Logger.getLogger("StockService");
+    //private static Logger LOGGER = Logger.getLogger("StockService");
 
     public List<Stock> getAllStocks() {
         return this.stockRepository.findAll();
