@@ -2,6 +2,7 @@ package com.solinftec.webbroker.fasttrading_stocks.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.solinftec.webbroker.fasttrading_stocks.dto.FullStockDto;
@@ -18,7 +19,7 @@ public class StockService {
     @Autowired
     StocksRepository stockRepository;
 
-    private static Logger LOGGER = Logger.getLogger("StockService");
+    private static final Logger LOGGER = Logger.getLogger("StockService");
     //private static Logger LOGGER = Logger.getLogger("StockService");
 
     public List<Stock> getAllStocks() {
@@ -49,7 +50,7 @@ public class StockService {
         Optional<Stock> optionalStock = this.stockRepository.findById(stockUpdate.getId());
         if (optionalStock.isPresent()) {
             Stock stockModel = this.stockRepository.save(getStockModelByStockUpdate(stockUpdate));
-            LOGGER.info("Stock updated : " + stockModel);
+            LOGGER.log(Level.INFO,"Stock updated : {0}",stockModel);
             return new FullStockDto(stockModel);
         }
         throw new Exception("STOCK_DOES_NOT_EXISTS");
